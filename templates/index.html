@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project_name }} - Gemini-3.8-Flash</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0B0F19',
+                            surface: '#1E293B',
+                            primary: '#3B82F6',
+                            emerald: '#10B981',
+                            amber: '#F59E0B',
+                            rose: '#EF4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+</head>
+<body class="bg-brand-navy text-slate-100 antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800/80 bg-slate-900/80 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <!-- Brand & Abstract Info -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">{{ project_name }}</h1>
+                        <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-950 text-blue-400 border border-blue-800">GenAI</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Legal & Compliance GenAI System &middot; Gemini-3.8-Flash &middot; Automated Review Pipeline</p>
+                </div>
+            </div>
+
+            <!-- Metadata Pills & Controls -->
+            <div class="flex items-center flex-wrap gap-2.5">
+                <!-- Engine Status -->
+                <div id="engineStatusBadge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 pulse-dot"></span>
+                    {{ display_model }} (Active)
+                </div>
+
+                <!-- Settings Button -->
+                <button onclick="openModal('settingsModal')" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="API & Model Settings">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+        <!-- Banner / Hero Summary -->
+        <div class="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-700/60 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                <div class="space-y-2 max-w-3xl">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        Automated Legal & Compliance Intelligence Pipeline
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                        Transform Vendor Contracts into Structured, Auditable Compliance Intelligence
+                    </h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Parse contracts and compliance policies, split them into discrete clauses, index them with RAG vector search, extract duties and deadlines, flag risks, and detect missing policy clauses with source-cited audit reports.
+                    </p>
+                </div>
+                <!-- 1-Click Action Hub -->
+                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                    <button onclick="loadSampleDocuments()" class="flex-1 lg:flex-none px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-600 text-xs font-semibold transition flex items-center justify-center space-x-2">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20"></path></svg>
+                        <span>Load Sample Contract & Policy</span>
+                    </button>
+                    <button id="runAnalysisBtn" onclick="runAnalysis()" class="flex-1 lg:flex-none px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold shadow-lg shadow-blue-600/30 transition flex items-center justify-center space-x-2">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Run Compliance Intelligence</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ingestion Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6 pt-6 border-t border-slate-700/50">
+                <!-- Dropzone 1: Contract -->
+                <div class="glass-card rounded-xl p-4 border border-slate-700 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">1. Vendor Contract Document</h3>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-mono">PDF, TXT</span>
+                    </div>
+                    <div id="contractDropzone" class="dropzone border-2 border-dashed border-slate-700 hover:border-blue-500/60 rounded-xl p-5 text-center transition cursor-pointer bg-slate-900/40">
+                        <input type="file" id="contractFileInput" accept=".pdf,.txt" class="hidden">
+                        <div onclick="document.getElementById('contractFileInput').click()">
+                            <svg class="w-8 h-8 mx-auto text-blue-400/80 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                            <p class="text-xs text-slate-200 font-medium">Click to select contract or drag & drop</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Master Services Agreement, Vendor SaaS Contract</p>
+                        </div>
+                    </div>
+                    <div id="contractFileInfo"></div>
+                </div>
+
+                <!-- Dropzone 2: Compliance Policy -->
+                <div class="glass-card rounded-xl p-4 border border-slate-700 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">2. Internal Compliance Policy</h3>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-mono">PDF, TXT</span>
+                    </div>
+                    <div id="policyDropzone" class="dropzone border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-xl p-5 text-center transition cursor-pointer bg-slate-900/40">
+                        <input type="file" id="policyFileInput" accept=".pdf,.txt" class="hidden">
+                        <div onclick="document.getElementById('policyFileInput').click()">
+                            <svg class="w-8 h-8 mx-auto text-indigo-400/80 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <p class="text-xs text-slate-200 font-medium">Click to select policy or drag & drop</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Corporate Vendor Risk Policy, GDPR/SOC 2 Standard</p>
+                        </div>
+                    </div>
+                    <div id="policyFileInfo"></div>
+                </div>
+            </div>
+
+            <!-- Pipeline Options -->
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
+                <label class="inline-flex items-center cursor-pointer select-none">
+                    <input type="checkbox" id="forceFallbackCheckbox" class="rounded bg-slate-800 border-slate-700 text-blue-600 focus:ring-0 mr-2">
+                    <span>Force Zero-Quota / Deterministic Offline Mode (Pure Rule Engine)</span>
+                </label>
+                <span class="text-slate-500 italic">Built-in Rate Limiting &amp; Quota Shield ensures zero 429 API errors.</span>
+            </div>
+        </div>
+
+        <!-- Animated Progress Section -->
+        <div id="progressSection" class="hidden glass-panel rounded-2xl p-6 border border-blue-500/30 shadow-xl space-y-4 text-center">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/10 text-blue-400 mb-2">
+                <svg class="w-6 h-6 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            </div>
+            <h3 class="text-base font-semibold text-white">Generating Legal &amp; Compliance Intelligence...</h3>
+            <p id="progressStatus" class="text-xs text-blue-400 font-medium animate-pulse">Initializing pipeline...</p>
+            <div class="w-full max-w-md mx-auto bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full transition-all duration-300" style="width: 15%"></div>
+            </div>
+        </div>
+
+        <!-- Intelligence Results Dashboard -->
+        <div id="resultsSection" class="hidden space-y-6">
+
+            <!-- Result Header & Export Toolbar -->
+            <div class="glass-panel rounded-2xl p-6 border border-slate-700/60 shadow-xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-700/50">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span id="reportIdDisplay" class="text-xs font-mono px-2 py-0.5 rounded bg-blue-950 text-blue-400 border border-blue-800">REP-000000</span>
+                            <span id="fallbackIndicatorBadge" class="hidden text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800" title="Quota Shield Handled">Shield Active</span>
+                            <h3 class="text-lg font-bold text-white">Compliance Intelligence Audit</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Contract: <span id="contractNameDisplay" class="text-slate-200 font-medium"></span> &middot;
+                            Policy: <span id="policyNameDisplay" class="text-slate-200 font-medium"></span> &middot;
+                            Engine: <span id="engineUsedDisplay" class="text-slate-200 font-medium"></span>
+                        </p>
+                    </div>
+
+                    <!-- Action Export Buttons -->
+                    <div class="flex items-center space-x-3">
+                        <button onclick="downloadPdfReport()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-600 text-xs font-semibold transition flex items-center space-x-2">
+                            <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span>Download Official PDF Audit Report</span>
+                        </button>
+                        <button onclick="exportJsonReport()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-medium transition" title="Export Raw JSON">
+                            JSON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Scorecard Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 pt-6">
+                    <!-- Score Meter -->
+                    <div class="col-span-2 sm:col-span-1 glass-card rounded-xl p-4 border border-slate-700/60 flex items-center space-x-3">
+                        <div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+                            <svg class="w-16 h-16 transform -rotate-90">
+                                <circle cx="32" cy="32" r="26" stroke="#1E293B" stroke-width="6" fill="transparent" />
+                                <circle id="scoreCircleBar" cx="32" cy="32" r="26" stroke="#10B981" stroke-width="6" fill="transparent" stroke-dasharray="163" stroke-dashoffset="40" stroke-linecap="round" class="transition-all duration-1000" />
+                            </svg>
+                            <span id="complianceScoreVal" class="absolute text-xs font-extrabold text-white">70%</span>
+                        </div>
+                        <div>
+                            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Compliance</div>
+                            <div id="complianceGradeVal" class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800 mt-1 inline-block">Grade C</div>
+                        </div>
+                    </div>
+
+                    <!-- High Risks -->
+                    <div class="glass-card rounded-xl p-4 border border-rose-900/30">
+                        <div class="text-[11px] uppercase tracking-wider text-rose-400 font-semibold">High Risks</div>
+                        <div id="highRiskCount" class="text-2xl font-bold text-rose-400 mt-1">0</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Critical exposures</div>
+                    </div>
+
+                    <!-- Medium Risks -->
+                    <div class="glass-card rounded-xl p-4 border border-amber-900/30">
+                        <div class="text-[11px] uppercase tracking-wider text-amber-400 font-semibold">Med Risks</div>
+                        <div id="medRiskCount" class="text-2xl font-bold text-amber-400 mt-1">0</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Negotiation items</div>
+                    </div>
+
+                    <!-- Missing Clauses -->
+                    <div class="glass-card rounded-xl p-4 border border-amber-900/30">
+                        <div class="text-[11px] uppercase tracking-wider text-amber-300 font-semibold">Missing Clauses</div>
+                        <div id="missingCount" class="text-2xl font-bold text-amber-300 mt-1">0</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Policy gaps</div>
+                    </div>
+
+                    <!-- Obligations -->
+                    <div class="glass-card rounded-xl p-4 border border-slate-700/60">
+                        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Obligations</div>
+                        <div id="obligationsCount" class="text-2xl font-bold text-white mt-1">0</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Duties mapped</div>
+                    </div>
+
+                    <!-- Deadlines -->
+                    <div class="glass-card rounded-xl p-4 border border-slate-700/60">
+                        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Deadlines</div>
+                        <div id="deadlinesCount" class="text-2xl font-bold text-white mt-1">0</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Timeframes</div>
+                    </div>
+                </div>
+
+                <!-- Executive Summary Box -->
+                <div class="mt-6 p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 leading-relaxed">
+                    <span class="font-semibold text-blue-400">Executive Audit Brief: </span>
+                    <span id="executiveSummaryText"></span>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Bar -->
+            <div class="flex items-center space-x-2 border-b border-slate-800 overflow-x-auto pb-1">
+                <button id="tabBtn-policy" onclick="switchTab('policy')" class="tab-btn active px-4 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-2 whitespace-nowrap">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                    <span>Policy Comparison (RAG)</span>
+                </button>
+                <button id="tabBtn-risks" onclick="switchTab('risks')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-2 whitespace-nowrap">
+                    <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <span>Risks &amp; Redlines</span>
+                </button>
+                <button id="tabBtn-missing" onclick="switchTab('missing')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-2 whitespace-nowrap">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Missing Clauses</span>
+                </button>
+                <button id="tabBtn-obligations" onclick="switchTab('obligations')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-2 whitespace-nowrap">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span>Party Obligations</span>
+                </button>
+                <button id="tabBtn-deadlines" onclick="switchTab('deadlines')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-2 whitespace-nowrap">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span>Deadlines &amp; Timelines</span>
+                </button>
+                <button id="tabBtn-clauses" onclick="switchTab('clauses')" class="tab-btn px-4 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition flex items-center space-x-2 whitespace-nowrap">
+                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <span>Clause Inspector</span>
+                </button>
+            </div>
+
+            <!-- Tab Content Panes -->
+
+            <!-- Pane 1: Policy Comparison -->
+            <div id="tabPane-policy" class="tab-pane space-y-4">
+                <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700/60 shadow-xl">
+                    <div class="p-4 bg-slate-900/60 border-b border-slate-800 flex items-center justify-between">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Policy vs Contract RAG Matrix</h4>
+                        <span class="text-xs text-slate-500">Retrieval Augmented Compliance Mapping</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-800 bg-slate-900/90 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                                    <th class="py-3 px-4">Req ID</th>
+                                    <th class="py-3 px-4">Policy Requirement</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4">Contract Finding &amp; Gap Analysis</th>
+                                    <th class="py-3 px-4">Citation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="policyComparisonTableBody" class="divide-y divide-slate-800/80"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pane 2: Risks & Redlines -->
+            <div id="tabPane-risks" class="tab-pane hidden space-y-4">
+                <div id="risksContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+
+            <!-- Pane 3: Missing Clauses -->
+            <div id="tabPane-missing" class="tab-pane hidden space-y-4">
+                <div id="missingClausesContainer" class="space-y-4"></div>
+            </div>
+
+            <!-- Pane 4: Obligations -->
+            <div id="tabPane-obligations" class="tab-pane hidden space-y-4">
+                <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700/60 shadow-xl">
+                    <div class="p-4 bg-slate-900/60 border-b border-slate-800 flex items-center justify-between">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Affirmative Duties &amp; Covenants</h4>
+                        <!-- Party Filter -->
+                        <div class="flex items-center space-x-2 text-xs">
+                            <span class="text-slate-400">Filter Party:</span>
+                            <select id="partyFilterSelect" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1 text-slate-200">
+                                <option value="All">All Parties</option>
+                                <option value="Vendor">Vendor Only</option>
+                                <option value="Client">Client Only</option>
+                                <option value="Mutual">Mutual</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-800 bg-slate-900/90 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                                    <th class="py-3 px-4">ID</th>
+                                    <th class="py-3 px-4">Party</th>
+                                    <th class="py-3 px-4">Category</th>
+                                    <th class="py-3 px-4">Duty &amp; Covenant Summary</th>
+                                    <th class="py-3 px-4">Citation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="obligationsTableBody" class="divide-y divide-slate-800/80"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pane 5: Deadlines -->
+            <div id="tabPane-deadlines" class="tab-pane hidden space-y-4">
+                <div class="glass-panel rounded-2xl p-6 border border-slate-700/60 shadow-xl">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-6">Contractual Notice Windows &amp; Critical Timelines</h4>
+                    <div id="deadlinesTimeline" class="max-w-2xl"></div>
+                </div>
+            </div>
+
+            <!-- Pane 6: Clause Inspector -->
+            <div id="tabPane-clauses" class="tab-pane hidden space-y-4">
+                <div class="glass-panel rounded-2xl p-5 border border-slate-700/60 shadow-xl space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Discrete Extracted Clauses Browser</h4>
+                        <div class="relative w-full sm:w-72">
+                            <input type="text" id="clauseSearchInput" placeholder="Search clause text or title..." class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500">
+                            <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                    </div>
+                    <div id="clauseInspectorList" class="space-y-3 max-h-[600px] overflow-y-auto pr-2"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Source Citation Modal -->
+    <div id="citationModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div class="glass-panel rounded-2xl border border-slate-700 p-6 max-w-lg w-full space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    <h3 class="text-sm font-bold text-white">Source Citation Inspector</h3>
+                </div>
+                <button onclick="closeModal('citationModal')" class="text-slate-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <div class="flex justify-between text-slate-400">
+                    <span>Document:</span>
+                    <span id="citationDocName" class="text-slate-200 font-semibold"></span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>Section:</span>
+                    <span id="citationSectionNumber" class="text-slate-200 font-semibold"></span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>Title:</span>
+                    <span id="citationSectionTitle" class="text-slate-200 font-semibold"></span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>Page Number:</span>
+                    <span id="citationPageNumber" class="text-slate-200 font-semibold"></span>
+                </div>
+            </div>
+            <div class="space-y-1">
+                <span class="text-xs text-slate-400 font-medium">Verbatim Source Excerpt:</span>
+                <div id="citationSnippet" class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 leading-relaxed italic max-h-48 overflow-y-auto"></div>
+            </div>
+            <div class="text-right pt-2">
+                <button onclick="closeModal('citationModal')" class="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 font-medium">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- API & Model Settings Modal -->
+    <div id="settingsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div class="glass-panel rounded-2xl border border-slate-700 p-6 max-w-md w-full space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
+                    GenAI &amp; Model Engine Settings
+                </h3>
+                <button onclick="closeModal('settingsModal')" class="text-slate-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-medium text-slate-300 mb-1">Google Gemini API Key:</label>
+                    <input type="password" id="settingsApiKey" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-blue-500 font-mono">
+                    <p class="text-[11px] text-slate-500 mt-1">Can also be stored in <code class="text-slate-400">.env</code> as <code class="text-slate-400">GEMINI_API_KEY</code>.</p>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-slate-300 mb-1">Target Model Engine:</label>
+                    <select id="settingsModel" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200">
+                        <option value="gemini-2.5-flash">Gemini-3.8-Flash (Default / High Speed)</option>
+                        <option value="gemini-2.0-flash">Gemini-2.0-Flash</option>
+                        <option value="gemini-1.5-flash">Gemini-1.5-Flash (High Quota Free Tier)</option>
+                    </select>
+                </div>
+
+                <div class="p-3 rounded-lg bg-blue-950/40 border border-blue-800/60 text-[11px] text-blue-200 leading-relaxed">
+                    <span class="font-semibold text-blue-400">Zero-Quota Error Guarantee:</span> If an API key is missing, expired, or hits Google's free rate limit (429), the system will automatically engage its high-precision local legal rule engine without interrupting your workflow.
+                </div>
+
+                <div id="testKeyResult" class="text-xs"></div>
+            </div>
+
+            <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                <button type="button" onclick="testApiKeyConnection()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 font-medium">Test Connection</button>
+                <div class="space-x-2">
+                    <button type="button" onclick="closeModal('settingsModal')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-400">Cancel</button>
+                    <button type="button" onclick="saveSettings()" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white">Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 bg-slate-900/60 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>{{ project_name }} &middot; Powered by Generative AI &amp; Retrieval-Augmented Generation (RAG)</p>
+        </div>
+    </footer>
+
+    <!-- App Script -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
